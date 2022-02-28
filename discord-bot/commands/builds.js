@@ -23,8 +23,12 @@ module.exports = {
 				.addChoice('Support', 'support')
 		),
 	async execute(interaction) {
-		await interaction.deferReply()
+		await interaction.deferReply({ ephemeral: false })
 		const buildsImageBuffer = await opgg.GetChampionBuildsAsImage(interaction.options.getString('champion'), interaction.options.getString('position'))
+		if (buildsImageBuffer === null) {
+			await interaction.editReply({ content: `Campeão "${interaction.options.getString('champion')}" não foi encontrado.` })
+			return
+		}
 		const builds = new MessageAttachment(buildsImageBuffer, 'builds.jpg')
 		const timeTaken = (Date.now() - interaction.createdTimestamp) / 1000
 

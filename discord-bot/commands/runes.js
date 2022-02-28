@@ -25,6 +25,10 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply()
 		const runesImageBuffer = await opgg.GetChampionRunesAsImage(interaction.options.getString('champion'), interaction.options.getString('position'))
+		if (runesImageBuffer === null) {
+			await interaction.editReply({ content: `Campeão "${interaction.options.getString('champion')}" não foi encontrado.` })
+			return
+		}
 		const runes = new MessageAttachment(runesImageBuffer, 'runes.jpg')
 		const timeTaken = (Date.now() - interaction.createdTimestamp) / 1000
 

@@ -1,6 +1,7 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
-const opggUrl = 'https://br.op.gg'
+const opggUrl = process.env.OPGG_URL
+const opggApiUrl = process.env.OPGG_API_URL
 const htmlToImage = require('../utils/htmlToImage')
 
 class Opgg {
@@ -21,36 +22,49 @@ class Opgg {
     }
 
     async GetChampionSpellsAsImage(champion, position) {
-        const url = `${opggUrl}/champions/${champion}/${position}/build`
-        const page = await this.getOpgg(url)
-        const $ = cheerio.load(page)
-        const spellsImageBuffer = await htmlToImage(".main > :nth-child(1)", $.html());
+        const $ = await this.GetChampionPage(champion, position)
+        if ($ === null) {
+            return null
+        }
+        const spellsImageBuffer = await htmlToImage(".main > :nth-child(1)", $.html())
+        if (spellsImageBuffer === null) {
+            return null
+        }
         return spellsImageBuffer
     }
 
     async GetChampionBuildsAsImage(champion, position) {
-        const url = `${opggUrl}/champions/${champion}/${position}/build`
-        const page = await this.getOpgg(url)
-        const $ = cheerio.load(page)
-        const buildsImageBuffer = await htmlToImage(".main > :nth-child(2)", $.html());
+        const $ = await this.GetChampionPage(champion, position)
+        if ($ === null) {
+            return null
+        }
+        const buildsImageBuffer = await htmlToImage(".main > :nth-child(2)", $.html())
+        if (buildsImageBuffer === null) {
+            return null
+        }
         return buildsImageBuffer
     }
 
     async GetChampionRunesAsImage(champion, position) {
-        const url = `${opggUrl}/champions/${champion}/${position}/build`
-        const page = await this.getOpgg(url)
-        const $ = cheerio.load(page)
-        const runesImageBuffer = await htmlToImage(".main > :nth-child(3)", $.html());
+        const $ = await this.GetChampionPage(champion, position)
+        if ($ === null) {
+            return null
+        }
+        const runesImageBuffer = await htmlToImage(".main > :nth-child(3)", $.html())
+        if (runesImageBuffer === null) {
+            return null
+        }
         return runesImageBuffer
     }
 
     async GetChampionAsImage(champion, position) {
-        const url = `${opggUrl}/champions/${champion}/${position}/build`
-        const page = await this.getOpgg(url)
-        const $ = cheerio.load(page)
-        const spellsImageBuffer = await htmlToImage(".main > :nth-child(1)", $.html());
-        const buildsImageBuffer = await htmlToImage(".main > :nth-child(2)", $.html());
-        const runesImageBuffer = await htmlToImage(".main > :nth-child(3)", $.html());
+        const $ = this.GetChampionPage(champion, position)
+        if ($ === null) {
+            return null
+        }
+        const spellsImageBuffer = await htmlToImage(".main > :nth-child(1)", $.html())
+        const buildsImageBuffer = await htmlToImage(".main > :nth-child(2)", $.html())
+        const runesImageBuffer = await htmlToImage(".main > :nth-child(3)", $.html())
         return {spells: spellsImageBuffer, builds: buildsImageBuffer, runes: runesImageBuffer}
     }
 
@@ -58,7 +72,7 @@ class Opgg {
         const token = await this.getOpggToken()
         const url = `${opggUrl}/_next/data/${token}/champions/${champion}/${position}/build.json`
 
-        const data = await this.get(
+        const data = await axios.get(
             url, {
             params: {
                 champion,
@@ -67,12 +81,24 @@ class Opgg {
             }
         })
 
-        return data.pageProps.data
+        return data.data.pageProps.data
     }
 
-    async get(url, params) {
-        const data = await axios.get(url, params)
-        return data.data
+    async GetChampionPage(champion, position) {
+        if (! await this.ChampionExists(champion, position)) {
+            return null
+        }
+        const url = `${opggUrl}/champions/${champion}/${position}/build`
+        const page = await this.getOpgg(url)
+        return cheerio.load(page)
+    }
+
+    async ChampionExists(champion, position) {
+        const url = `${opggApiUrl}/champions/ranked/${champion}/${position}`
+
+        const data = await axios.get(url).catch((err) => err)
+
+        return !(data instanceof Error)
     }
 }
 

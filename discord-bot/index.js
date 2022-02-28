@@ -5,8 +5,8 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 const setup = new Setup()
 
 class Bot {
-    Start() {
-        setup.Start()
+    async Start() {
+        await setup.Start()
 
         client.commands = new Collection()
         client.messages = new Collection()
