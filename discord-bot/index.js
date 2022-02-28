@@ -73,7 +73,7 @@ class Bot {
             }
 
             const commandBody = message.content.slice(process.env.BOT_PREFIX.length)
-            const args = commandBody.split(' ')
+            const args = commandBody.trim().split(' ')
             const command = args.shift().toLowerCase()
             const response = client.messages.get(command)
             if (!response) {
