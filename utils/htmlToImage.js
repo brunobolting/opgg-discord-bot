@@ -10,7 +10,7 @@ async function htmlToImage(tag = "body", html = "") {
     if (content === null) {
         return null;
     }
-	const imageBuffer = await content.screenshot({ omitBackground: true })
+	const imageBuffer = await content.screenshot({ omitBackground: false })
 
 	await page.close()
 	await browser.close()
