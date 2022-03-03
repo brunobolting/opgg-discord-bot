@@ -19,7 +19,7 @@ module.exports = {
 				.addChoice('Top Lane', 'top')
 				.addChoice('Jungle', 'jungle')
 				.addChoice('Mid Lane', 'mid')
-				.addChoice('Bot Lane', 'bot')
+				.addChoice('Bot Lane', 'adc')
 				.addChoice('Support', 'support')
 		),
 	async execute(interaction) {
