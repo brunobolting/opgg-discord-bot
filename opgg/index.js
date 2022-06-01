@@ -26,7 +26,10 @@ class Opgg {
         if ($ === null) {
             return null
         }
-        const spellsImageBuffer = await htmlToImage(".main > :nth-child(1)", $.html())
+        const spellsImageBuffer = await htmlToImage(
+          "main > :nth-child(1)",
+          $.html()
+        )
         if (spellsImageBuffer === null) {
             return null
         }
@@ -38,7 +41,10 @@ class Opgg {
         if ($ === null) {
             return null
         }
-        const buildsImageBuffer = await htmlToImage(".main > :nth-child(2)", $.html())
+        const buildsImageBuffer = await htmlToImage(
+          "main > :nth-child(2)",
+          $.html()
+        )
         if (buildsImageBuffer === null) {
             return null
         }
@@ -50,7 +56,10 @@ class Opgg {
         if ($ === null) {
             return null
         }
-        const runesImageBuffer = await htmlToImage(".main > :nth-child(3)", $.html())
+        const runesImageBuffer = await htmlToImage(
+          "main > :nth-child(3)",
+          $.html()
+        )
         if (runesImageBuffer === null) {
             return null
         }
@@ -62,9 +71,18 @@ class Opgg {
         if ($ === null) {
             return null
         }
-        const spellsImageBuffer = await htmlToImage(".main > :nth-child(1)", $.html())
-        const buildsImageBuffer = await htmlToImage(".main > :nth-child(2)", $.html())
-        const runesImageBuffer = await htmlToImage(".main > :nth-child(3)", $.html())
+        const spellsImageBuffer = await htmlToImage(
+          "main > :nth-child(1)",
+          $.html()
+        )
+        const buildsImageBuffer = await htmlToImage(
+          "main > :nth-child(2)",
+          $.html()
+        )
+        const runesImageBuffer = await htmlToImage(
+          "main > :nth-child(3)",
+          $.html()
+        )
         return {spells: spellsImageBuffer, builds: buildsImageBuffer, runes: runesImageBuffer}
     }
 
