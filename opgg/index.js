@@ -27,7 +27,7 @@ class Opgg {
             return null
         }
         const spellsImageBuffer = await htmlToImage(
-          "main > :nth-child(1)",
+          "main > :nth-child(2)",
           $.html()
         )
         if (spellsImageBuffer === null) {
@@ -42,7 +42,7 @@ class Opgg {
             return null
         }
         const buildsImageBuffer = await htmlToImage(
-          "main > :nth-child(2)",
+          "main > :nth-child(3)",
           $.html()
         )
         if (buildsImageBuffer === null) {
@@ -57,7 +57,7 @@ class Opgg {
             return null
         }
         const runesImageBuffer = await htmlToImage(
-          "main > :nth-child(3)",
+          "main > :nth-child(-n + 2)",
           $.html()
         )
         if (runesImageBuffer === null) {
@@ -71,19 +71,24 @@ class Opgg {
         if ($ === null) {
             return null
         }
-        const spellsImageBuffer = await htmlToImage(
+        const runesImageBuffer = await htmlToImage(
           "main > :nth-child(1)",
           $.html()
         )
-        const buildsImageBuffer = await htmlToImage(
+        const spellsImageBuffer = await htmlToImage(
           "main > :nth-child(2)",
           $.html()
         )
-        const runesImageBuffer = await htmlToImage(
+        const buildsImageBuffer = await htmlToImage(
           "main > :nth-child(3)",
           $.html()
         )
-        return {spells: spellsImageBuffer, builds: buildsImageBuffer, runes: runesImageBuffer}
+
+        return {
+          runes: runesImageBuffer,
+          spells: spellsImageBuffer,
+          builds: buildsImageBuffer,
+        }
     }
 
     async GetChampion(champion, position) {
