@@ -67,7 +67,7 @@ class Opgg {
     }
 
     async GetChampionAsImage(champion, position) {
-        const $ = this.GetChampionPage(champion, position)
+        const $ = await this.GetChampionPage(champion, position)
         if ($ === null) {
             return null
         }
